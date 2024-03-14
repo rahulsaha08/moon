@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon Pictures</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fdd2d5; /* Pastel pink background */
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    margin-bottom: 20px;
+    color: #ff7f9c; /* Pastel pink text color */
+  }
+  #moon-image {
+    max-width: calc(100% - 40px); /* Set the max-width to maintain 9:16 aspect ratio */
+    max-height: calc(100vh - 250px); /* Set max-height to match image aspect ratio */
+    border-radius: 8px;
+    display: none;
+    margin-top: 20px;
+  }
+  #see-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff7f9c; /* Pastel pink background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  #resolution-select {
+    max-width: 400px;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  /* Responsive adjustments */
+  @media only screen and (max-width: 600px) {
+    .container {
+      max-width: 100%;
+      padding: 10px;
+    }
+    h1 {
+      font-size: 20px;
+    }
+    #resolution-select {
+      max-width: none;
+    }
+  }
+</style>
+</head>
+<body>
+<audio id="background-music" src="yoon_shabnami.mp3" loop></audio>
+<div class="container">
+  <h1>Pictures of moon in different resolutions</h1>
+  <select id="resolution-select">
+    <option value="default" selected>Select resolution</option>
+    <option value="8bit">8bit</option>
+    <option value="144p" disabled>144p</option>
+    <option value="240p" disabled>240p</option>
+    <option value="360p" disabled>360p</option>
+    <option value="1080p" disabled>1080p</option>
+  </select><br> <!-- Add line break -->
+  <button id="see-button">See</button><br> <!-- Move the button and add line break -->
+  <img id="moon-image" src="" alt="Moon">
+</div>
+
+<script>
+  const resolutions = ["8bit", "144p", "240p", "360p", "1080p"];
+  let currentIndex = 0;
+
+  const resolutionSelect = document.getElementById('resolution-select');
+  const moonImage = document.getElementById('moon-image');
+  const seeButton = document.getElementById('see-button');
+  const backgroundMusic = document.getElementById('background-music');
+
+  seeButton.addEventListener('click', () => {
+    const selectedResolution = resolutionSelect.value;
+    if (selectedResolution !== "default") {
+      const imageSrc = `moon_${selectedResolution}.jpg`; // assuming image names follow a pattern like "moon_144p.jpg"
+      moonImage.src = imageSrc;
+      moonImage.style.display = 'block';
+      if (selectedResolution === "1080p") {
+        backgroundMusic.play();
+      } else {
+        backgroundMusic.pause();
+      }
+    }
+
+    // Enable the next resolution option
+    if (currentIndex < resolutions.length - 1) {
+      resolutionSelect.children[currentIndex + 2].disabled = false;
+      currentIndex++;
+    }
+  });
+
+  resolutionSelect.addEventListener('change', () => {
+    const selectedResolution = resolutionSelect.value;
+    if (selectedResolution === "8bit") {
+      moonImage.style.display = 'none'; // Hide image when resolution changes
+    }
+  });
+</script>
+</body>
+</html>
